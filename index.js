@@ -5,12 +5,19 @@ import morgan from "morgan";
 
 import db from './config/db.js'
 
+import categoryRoutes from './routes/category.js'
+import productRoutes from './routes/product.js'
+
 const app = express();
 
 dotenv.config();
 
 app.use(morgan("dev"));
 app.use(express.json());
+
+// register routes
+app.use('/api', categoryRoutes)
+app.use('/api', productRoutes)
 
 const port = process.env.PORT || 8000;
 
