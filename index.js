@@ -8,9 +8,14 @@ import db from './config/db.js'
 import categoryRoutes from './routes/category.js'
 import productRoutes from './routes/product.js'
 
+dotenv.config();
+
 const app = express();
 
-dotenv.config();
+mongoose
+    .connect(db)
+    .then(() => console.log('DB connected!'))
+    .catch(err => console.log('DB ERROR =>', err))
 
 app.use(morgan("dev"));
 app.use(express.json());
