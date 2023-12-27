@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import morgan from "morgan";
 
+import db from './config/db.js'
+
 const app = express();
 
 dotenv.config();
