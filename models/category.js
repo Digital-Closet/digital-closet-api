@@ -1,0 +1,21 @@
+import mongoose from 'mongoose'
+const { Schema } = mongoose
+
+const categorySchema = new Schema(
+    {
+        name: {
+            type: String,
+            trim: true,
+            required: true,
+            maxLength: 20,
+            unique: true,
+        },
+        slug: {
+            type: String,
+            unique: true,
+            lowercase: true,
+        },
+    }, {
+        timestamps: true
+    }
+)
