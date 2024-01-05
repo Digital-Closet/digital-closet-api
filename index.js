@@ -20,7 +20,6 @@ mongoose
 
 //Router middleware
 app.use("/api", authRoutes);
-
 app.use(morgan("dev"));
 app.use(express.json());
 
