@@ -19,11 +19,11 @@ mongoose
   .catch((err) => console.log("DB ERROR =>", err));
 
 //Router middleware
-app.use("/api", authRoutes);
 app.use(morgan("dev"));
 app.use(express.json());
 
 // register routes
+app.use("/api", authRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
 
