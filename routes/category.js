@@ -49,6 +49,11 @@ router.post('/categories', async (req, res) => {
 // UPDATE
 router.patch('/categories/:categoryId', async (req, res) => {
     try {
+        const { name } = req.body
+        const existingCategory = await Category.findOne({name})
+        if (existingCategory) {
+            return res.json({error: 'Cateory name already exists!'})
+        }
         const category = await Category.findByIdAndUpdate(req.params.categoryId, {
             name: req.body.name,
             slug: slugify(req.body.name)
