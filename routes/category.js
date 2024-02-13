@@ -47,7 +47,30 @@ router.post('/categories', async (req, res) => {
 })
 
 // UPDATE
+router.patch('/categories/:categoryId', async (req, res) => {
+    try {
+        const category = await Category.findByIdAndUpdate(req.params.categoryId, {
+            name: req.body.name,
+            slug: slugify(req.body.name)
+        }, {
+            new: true
+        })
+        res.json(category)
+    } catch (err) {
+        console.log(err)
+        return res.status(400).json(err.message)
+    }
+})
 
 // DELETE
+router.delete('/categories/:categoryId', async (req, res) => {
+    try {
+        const removedCategory = await Category.findByIdAndDelete(req.params.categoryId)
+        res.json(removedCategory)
+    } catch (err) {
+        console.log(err)
+        return res.status(400).json(err.message)
+    }
+})
 
 export default router
