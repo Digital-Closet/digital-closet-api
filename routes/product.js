@@ -22,7 +22,7 @@ router.get('/products', async (req, res) => {
 router.get('/products/:productId', async (req, res) => {
     try {
         const product = await Product.findById(req.params.productId)
-        res.json(product)
+        res.json({name: product.name, description: product.description, category: product.category, photo: product.photo.contentType})
     } catch (err) {
         console.log(err)
         return res.status(400).json(err.message)
@@ -32,8 +32,6 @@ router.get('/products/:productId', async (req, res) => {
 // CREATE
 router.post('/products', formidable(), async (req, res) => {
     try {
-        // console.log(req.fields)
-        // console.log(req.files)
         const { name, description, category } = req.fields
         const { photo } = req.files
 
@@ -54,7 +52,7 @@ router.post('/products', formidable(), async (req, res) => {
             product.photo.contentType = photo.type
         }
         await product.save()
-        res.json(product)
+        res.json({name: product.name, description: product.description, category: product.category, photo: product.photo.contentType})
 
     } catch (err) {
         console.log(err)
@@ -63,6 +61,39 @@ router.post('/products', formidable(), async (req, res) => {
 })
 
 // UPDATE
+router.put('/products/:productId', formidable(), async (req, res) => {
+    try {
+        const { name, description, category } = req.fields
+        const { photo } = req.files
+    
+        // switch (true) {
+        //     case !name.trim():
+        //         res.json({ error: 'Name is required!'})
+        //     case !description.trim():
+        //         res.json({ error: 'Description is required!'})
+        //     case !category.trim():
+        //         res.json({ error: 'Category is required!'})
+        //     case photo && photo.size > 1000000:
+        //         res.json({ error: 'Photo must be less than 1mb in size.'})
+        // }
+        const product = await Product.findByIdAndUpdate(
+            req.params.productId, 
+            { ...req.fields, slug: slugify(name)},
+            { new: true }
+        )
+    
+        if (photo) {
+            product.photo.data = fs.readFileSync(photo.path)
+            product.photo.contentType = photo.type
+        }
+        await product.save()
+        res.json(product)
+
+    } catch (err) {
+        console.log(err)
+        return res.status(400).json(err.message)
+    }
+})
 
 // DELETE
 
