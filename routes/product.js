@@ -52,7 +52,7 @@ router.post('/products', formidable(), async (req, res) => {
             product.photo.contentType = photo.type
         }
         await product.save()
-        res.json({name: product.name, description: product.description, category: product.category, photo: product.photo.contentType})
+        res.json(product)
 
     } catch (err) {
         console.log(err)
@@ -96,5 +96,14 @@ router.put('/products/:productId', formidable(), async (req, res) => {
 })
 
 // DELETE
+router.delete('/products/:productId', formidable(), async (req, res) => {
+    try {
+        const removedProduct = await Product.findByIdAndDelete(req.params.productId).select("-photo")
+        res.json(removedProduct)
+    } catch (err) {
+        console.log(err)
+        return res.status(400).json(err.message)
+    }
+})
 
 export default router
