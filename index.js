@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import authRoutes from "./routes/auth.js";
+import cors from 'cors';
 
 import db from "./config/db.js";
 
@@ -19,6 +20,7 @@ mongoose
   .catch((err) => console.log("DB ERROR =>", err));
 
 //Router middleware
+app.use(cors())
 app.use(morgan("dev"));
 app.use(express.json());
 
